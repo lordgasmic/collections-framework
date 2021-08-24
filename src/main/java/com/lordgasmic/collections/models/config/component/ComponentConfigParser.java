@@ -12,11 +12,7 @@ import java.util.Optional;
 import java.util.Properties;
 
 public class ComponentConfigParser {
-    private static final String REPOSITORY_NAME = "repositoryName";
-    private static final String DEFINITION_FILES = "definitionFiles";
-    private static final String ID_GENERATOR = "idGenerator";
     private static final String CLASS = "$class";
-
 
     public static Component parse(final File config) {
         final Properties prop = new Properties();
