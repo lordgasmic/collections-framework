@@ -1,0 +1,13 @@
+<!DOCTYPE gsa-template PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+    "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+    <item-descriptor name="storeText" display-name="Store Text" display-property="key">
+        <table name="GFS_STORE_TEXT" type="primary" id-column-name="KEY_ID">
+            <property name="key"  display-name="Key"  category="Key"  data-type="string" column-name="KEY_ID" required="true">
+                <attribute name="unique" value="true"/>
+            </property>
+            <property name="text" display-name="Text" category="Text" data-type="big string" column-name="TEXT"   required="true"/>
+        </table>
+    </item-descriptor>
+</gsa-template>

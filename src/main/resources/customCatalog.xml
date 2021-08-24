@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template  PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN" "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+    <header>
+        <name>GFS Extended Custom Catalog</name>
+        <author>Marketplace WOC Team</author>
+    </header>
+      
+    <!--/////////////////////////////// -->
+    <!-- category -->
+    <!--/////////////////////////////// -->
+    <item-descriptor name="category">
+        <table name="dcs_cat_media">
+            <property name="thumbnailImage" xml-combine="remove" />
+            <property name="smallImage" xml-combine="remove" />
+            <property name="largeImage" xml-combine="remove" />
+        </table>
+        <table name="dcs_cat_aux_media">
+            <property name="auxiliaryMedia" xml-combine="remove" />
+        </table>
+        <table name="dcs_category" type="primary" id-column-name="category_id">
+            <property name="title" data-type="string"
+                column-name="GFS_TITLE" category="GFS Extension"
+                display-name="Title">
+                <attribute name="propertySortPriority" value="102" />
+            </property>
+            <property name="thumbnailImage" item-type="media-external"
+                column-name="GFS_THUMBNAIL_IMAGE" category="GFS Extension"
+                display-name="Thumbnail Image">
+                <attribute name="propertySortPriority" value="103" />
+            </property>
+            <property name="icon" data-type="string"
+                column-name="GFS_ICON" category="GFS Extension"
+                display-name="Icon">
+                <attribute name="propertySortPriority" value="104" />
+            </property>
+            <property name="bannerAdImage" item-type="media-external"
+                column-name="GFS_BANNER_AD_IMAGE" category="GFS Extension"
+                display-name="Banner Ad Image">
+                <attribute name="propertySortPriority" value="105" />
+            </property>
+            <property name="bannerAdLink" data-type="string"
+                column-name="GFS_BANNER_AD_LINK" category="GFS Extension"
+                display-name="Banner Ad Link">
+                <attribute name="propertySortPriority" value="106" />
+            </property>
+            <property name="isPADisplayable" data-type="boolean"
+                default="true" column-name="gfs_is_displayable" category="GFS Extension"
+                display-name="Product Acquisition Displayable">
+                <attribute name="propertySortPriority" value="120" />
+            </property>
+            <property name="isComputedDisplayable" data-type="boolean"
+                default="true" column-name="gfs_is_comp_displayable" category="GFS Extension"
+                display-name="Computed Catalog Displayable">
+                <attribute name="propertySortPriority" value="130" />
+            </property>
+            <property name="displaySequence" data-type="int"
+                column-name="GFS_DISPLAY_SEQUENCE" category="GFS Extension"
+                display-name="Display Sequence">
+                <attribute name="propertySortPriority" value="135" />
+            </property>
+        </table>
+        <table name="GFS_CAT_FEAT_PRDS" type="multi"
+            id-column-name="CATEGORY_ID" multi-column-name="SEQUENCE_NUM">
+            <property name="featuredProducts" data-type="list"
+                component-item-type="product" column-name="PRODUCT_ID"
+                category="GFS Extension" display-name="Featured Products">
+                <attribute name="propertySortPriority" value="107" />
+            </property>
+        </table>
+    </item-descriptor>
+
+    <!--/////////////////////////////// -->
+    <!-- product -->
+    <!--/////////////////////////////// -->
+    <item-descriptor name="product">
+        <table name="dcs_prd_media">
+            <property name="thumbnailImage" display-name="DONOTUSE" writable="false"/>
+            <property name="smallImage" xml-combine="remove" />
+            <property name="largeImage" xml-combine="remove" />
+        </table>
+        <table name="dcs_prd_aux_media">
+            <property name="auxiliaryMedia" xml-combine="remove" />
+        </table>
+        <table name="dcs_product" type="primary" id-column-name="product_id">
+            <property name="isBreakable" data-type="boolean"
+                default="false" column-name="GFS_IS_BREAKABLE" category="GFS Extension"
+                display-name="Is Breakable">
+                <attribute name="propertySortPriority" value="100" />
+            </property>
+            <property name="singleUnitsPerMasterSellUnit" data-type="int"
+                column-name="gfs_single_unit_qty_per_master" category="GFS Extension"
+                display-name="Single Units Per Master Sell Unit">
+                <attribute name="propertySortPriority" value="102" />
+            </property>
+            <property name="singleUnitsPerMasterSellUnitUOM" item-type="uom"
+                column-name="gfs_single_unit_uom" category="GFS Extension"
+                display-name="Single Units Per Master Sell Unit UOM">
+                <attribute name="propertySortPriority" value="103" />
+            </property>
+            <property name="caseNetWeightLbs" data-type="double"
+                column-name="gfs_case_netwt_lbs" category="GFS Extension"
+                display-name="Case Net Weight (Lbs)">
+                <attribute name="propertySortPriority" value="105"/>
+            </property>
+            <property name="caseGrossWeightLbs" data-type="double"
+                column-name="gfs_case_grosswt_lbs" category="GFS Extension"
+                display-name="Case Gross Weight (Lbs)">
+                <attribute name="propertySortPriority" value="106"/>
+            </property>
+            <property name="fullView" data-type="string"
+                column-name="GFS_FULL_VIEW" category="GFS Extension"
+                display-name="Full View Description">
+                <attribute name="propertySortPriority" value="108" />
+            </property>
+            <property name="listView" data-type="string"
+                column-name="GFS_LIST_VIEW" category="GFS Extension"
+                display-name="List View Description">
+                <attribute name="propertySortPriority" value="109" />
+            </property>
+            <property name="sellingStatement" data-type="string"
+                column-name="GFS_SELLING_STATEMENT" category="GFS Extension"
+                display-name="Selling Statement">
+                <attribute name="propertySortPriority" value="110" />
+            </property>
+            <property name="isCatchweight" data-type="boolean"
+                default="false" column-name="GFS_IS_CATCHWEIGHT"
+                category="GFS Extension" display-name="Is Catchweight">
+                <attribute name="propertySortPriority" value="111" />
+            </property>
+            <property name="isKosher" data-type="boolean"
+                default="false" column-name="GFS_IS_KOSHER" category="GFS Extension"
+                display-name="Kosher">
+                <attribute name="propertySortPriority" value="120" />
+            </property>
+            <property name="isSchool" data-type="boolean"
+                default="false" column-name="GFS_IS_SCHOOL" category="GFS Extension"
+                display-name="School Commodity Lock-Out">
+                <attribute name="propertySortPriority" value="130" />
+            </property>
+            <property name="isChildNutrition" data-type="boolean"
+                default="false" column-name="GFS_IS_CHILD_NUTRITION" category="GFS Extension"
+                display-name="Child Nutrition Label">
+                <attribute name="propertySortPriority" value="135" />
+            </property>
+            <property name="isGlutenFree" data-type="boolean"
+                default="false" column-name="GFS_IS_GLUTEN_FREE" category="GFS Extension"
+                display-name="Gluten Free">
+                <attribute name="propertySortPriority" value="136" />
+            </property>
+            <property name="isRestricted" data-type="boolean"
+                default="false" column-name="GFS_IS_RESTRICTED"
+                category="GFS Extension" display-name="Is Restricted">
+                <attribute name="propertySortPriority" value="140" />
+            </property>
+            <property name="privateLabel" item-type="privateLabel"
+                column-name="GFS_PRIVATE_LABEL" category="GFS Extension"
+                display-name="Private Label">
+                <attribute name="propertySortPriority" value="150" />
+            </property>
+            <property name="gfsStatus" data-type="string"
+                column-name="GFS_STATUS" category="GFS Extension"
+                display-name="Status">
+                <attribute name="propertySortPriority" value="160" />
+            </property>
+            <property name="isSuppressedByOverride" data-type="boolean"
+                default="false" column-name="GFS_SUPPRESSED" category="GFS Extension"
+                display-name="Is Suppressed">
+                <attribute name="propertySortPriority" value="170" />
+            </property>
+            <property name="storage" data-type="enumerated"
+                column-name="GFS_STORAGE" category="GFS Extension"
+                display-name="Storage">
+                <attribute name="propertySortPriority" value="180" />
+                <attribute name="useCodeForValue" value="true" />
+                <option value="Cooler" code="0" />
+                <option value="Freezer" code="1" />
+                <option value="Grocery" code="2" />
+            </property>
+            <property name="isPADisplayable" data-type="boolean"
+                default="true" column-name="gfs_is_displayable" category="GFS Extension"
+                display-name="Product Acquisition Displayable">
+                <attribute name="propertySortPriority" value="190" />
+            </property>
+            <property name="isComputedDisplayable" data-type="boolean"
+                default="true" column-name="gfs_is_comp_displayable" category="GFS Extension"
+                display-name="Computed Catalog Displayable">
+                <attribute name="propertySortPriority" value="200" />
+            </property>
+            <property name="coreNoun" data-type="string"
+                column-name="GFS_CORE_NOUN" category="GFS Extension"
+                display-name="Core Noun">
+                <attribute name="propertySortPriority" value="210" />
+            </property>
+            <property name="coreNounIdentifier" data-type="string"
+                column-name="GFS_CORE_NOUN_IDENTIFIER" category="GFS Extension"
+                display-name="Core Noun Identifier">
+                <attribute name="propertySortPriority" value="220" />
+            </property>
+        </table>
+        <property name="isCustomerDisplayable" data-type="boolean"
+            property-type="com.gfs.ecom.marketplace.catalog.dp.CustomerDisplayablePropertyDescriptor"
+            category="GFS Extension" display-name="Allowed to display to customers" queryable="true" readable="true" writable="false">
+            <attribute name="propertySortPriority" value="210" />
+        </property>
+        <table name="gfs_sell_stmnt_bullets" type="multi"
+            id-column-name="product_id" multi-column-name="sequence_num">
+            <property name="sellingStatementBullets" data-type="list"
+                component-data-type="string" column-name="bullet"
+                category="GFS Extension"
+                display-name="Selling Statement Bullets">
+                <attribute name="propertySortPriority" value="111" />
+            </property>
+        </table>
+
+    </item-descriptor>
+
+    <!--/////////////////////////////// -->
+    <!-- sku -->
+    <!--/////////////////////////////// -->
+    <item-descriptor name="sku">
+        <table name="dcs_sku_media">
+            <property name="thumbnailImage" xml-combine="remove" />
+            <property name="smallImage" xml-combine="remove" />
+            <property name="largeImage" xml-combine="remove" />
+        </table>
+        <table name="dcs_sku_aux_media">
+            <property name="auxiliaryMedia" xml-combine="remove" />
+        </table>
+        <table name="dcs_sku" type="primary" id-column-name="sku_id">
+            <property name="type" display-name="SKU Type">
+                <option value="caseSku" code="5000" />
+            </property>
+            <property name="packageType" data-type="string"
+                column-name="GFS_PACKAGE_TYPE" category="GFS Extension"
+                display-name="Package Type - deprecated">
+                <attribute name="propertySortPriority" value="100" />
+            </property>
+            <property name="unitOfMeasure" item-type="uom"
+                column-name="GFS_UOM" category="GFS Extension"
+                display-name="Unit of Measure">
+                <attribute name="propertySortPriority" value="101" />
+            </property>
+            <property name="packageQuantity" data-type="double"
+                column-name="GFS_PACKAGE_QTY" category="GFS Extension"
+                display-name="Package Quantity">
+                <attribute name="propertySortPriority" value="102" />
+            </property>
+            <property name="packageUnitOfMeasure" item-type="uom"
+                column-name="GFS_PACKAGE_UOM" category="GFS Extension"
+                display-name="Package UOM">
+                <attribute name="propertySortPriority" value="103" />
+            </property>
+        </table>
+    </item-descriptor>
+
+    <!--/////////////////////////////// -->
+    <!-- caseSku -->
+    <!--/////////////////////////////// -->
+    <item-descriptor name="caseSku" super-type="sku"
+        sub-type-value="caseSku" display-name="Case SKU">
+        <table name="GFS_CASE_SKU" id-column-name="SKU_ID">
+            <property name="caseQuantity" data-type="int"
+                column-name="CASE_QUANTITY" category="GFS Extension"
+                display-name="Case Quantity">
+                <attribute name="propertySortPriority" value="100" />
+            </property>
+            <property name="caseUnitOfMeasure" item-type="uom"
+                column-name="CASE_UOM" category="GFS Extension"
+                display-name="Case UOM">
+                <attribute name="propertySortPriority" value="101" />
+            </property>
+        </table>
+    </item-descriptor>
+
+    <!--/////////////////////////////// -->
+    <!-- privateLabel -->
+    <!--/////////////////////////////// -->
+    <item-descriptor name="privateLabel" display-name="GFS Private Label" display-property="id">
+        <table name="GFS_PRIVATE_LABEL" type="primary"
+            id-column-name="ID_LABEL_CODE">
+            <property name="id" data-type="string" column-name="ID_LABEL_CODE"
+                category="GFS Extension" display-name="Id">
+                <attribute name="propertySortPriority" value="100" />
+            </property>
+            <property name="labelName" data-type="string"
+                column-name="LABEL_NAME" category="GFS Extension"
+                display-name="Label Name">
+                <attribute name="propertySortPriority" value="101" />
+            </property>
+        </table>
+    </item-descriptor>
+
+    <!--/////////////////////////////////// -->
+    <!-- uom (Unit of Measure) -->
+    <!--/////////////////////////////////// -->
+    <item-descriptor name="uom" display-property="code"
+        display-name="Unit of Measure" cache-mode="simple"
+        item-cache-size="1000" query-cache-size="1000">
+
+        <table name="GFS_UNIT_OF_MEASURE" type="primary"
+            id-column-name="UOM_CODE">
+            <property name="code" display-name="Code"
+                category="Unit of Measure" data-type="string"
+                column-name="UOM_CODE" required="true">
+                <attribute name="propertySortPriority" value="1" />
+            </property>
+            <property name="name" display-name="Name"
+                category="Unit of Measure" data-type="string"
+                column-name="UOM_NAME" required="true">
+                <attribute name="propertySortPriority" value="3" />
+            </property>
+            <property name="abbreviation" display-name="Abbreviation"
+                category="Unit of Measure" data-type="string"
+                column-name="UOM_ABBREVIATION" required="true">
+                <attribute name="propertySortPriority" value="2" />
+            </property>
+        </table>
+
+    </item-descriptor>
+
+</gsa-template>
