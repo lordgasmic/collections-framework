@@ -22,9 +22,6 @@ public class DataSource implements Component {
 
             final PreparedStatement stmt = conn.prepareStatement(sql);
             return stmt.executeQuery();
-            //            while (rs.next()) {
-            //                System.out.println(rs.getString("id"));
-            //            }
         }
     }
 }

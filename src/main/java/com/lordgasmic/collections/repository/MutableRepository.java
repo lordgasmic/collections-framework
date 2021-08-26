@@ -1,4 +1,4 @@
 package com.lordgasmic.collections.repository;
 
-public interface MutableRepository {
+public interface MutableRepository extends Repository {
 }

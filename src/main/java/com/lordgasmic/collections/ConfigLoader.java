@@ -4,6 +4,7 @@ import com.lordgasmic.collections.helper.Component;
 import com.lordgasmic.collections.models.config.component.ComponentConfigParser;
 import com.lordgasmic.collections.models.config.repository.ItemDescriptor;
 import com.lordgasmic.collections.models.config.repository.RepositoryConfigParser;
+import com.lordgasmic.collections.repository.GSARepository;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class ConfigLoader {
         final File[] mixedConfig = resources.listFiles();
 
         Arrays.stream(mixedConfig).flatMap(ConfigLoader::toRegularFile).parallel().forEach(ConfigLoader::parse);
+        hydrateComponents();
 
         System.out.println(components);
         System.out.println(definitionFiles);
@@ -54,6 +56,15 @@ public class ConfigLoader {
             definitionFiles.put(file.getName().substring(0, file.getName().indexOf('.')), RepositoryConfigParser.parse(file));
         } else {
             System.out.println("Skipping parsing of file: " + file.getName());
+        }
+    }
+
+    private static void hydrateComponents() {
+        for (final Map.Entry<String, Component> entry : components.entrySet()) {
+            if (entry.getValue() instanceof GSARepository) {
+                final GSARepository repository = (GSARepository) entry.getValue();
+
+            }
         }
     }
 }

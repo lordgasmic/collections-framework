@@ -3,7 +3,8 @@ package com.lordgasmic.collections.models.config.repository;
 import com.google.gson.annotations.SerializedName;
 
 public enum TableType {
-    @SerializedName("primary") PRIMARY("primary"), @SerializedName("secondary") SECONDARY("secondary");
+    @SerializedName("primary") PRIMARY("primary"),
+    @SerializedName("multi") MULTI("multi");
 
     private final String value;
 
