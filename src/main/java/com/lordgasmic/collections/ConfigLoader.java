@@ -6,9 +6,12 @@ import com.lordgasmic.collections.models.config.repository.ItemDescriptor;
 import com.lordgasmic.collections.models.config.repository.RepositoryConfigParser;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class ConfigLoader {
 
@@ -19,7 +22,29 @@ public class ConfigLoader {
         final File resources = new File("src/main/resources");
         final File[] mixedConfig = resources.listFiles();
 
-        Arrays.stream(mixedConfig).parallel().forEach(ConfigLoader::parse);
+        Arrays.stream(mixedConfig).flatMap(ConfigLoader::toRegularFile).parallel().forEach(ConfigLoader::parse);
+
+        System.out.println(components);
+        System.out.println(definitionFiles);
+    }
+
+    private static Stream<File> toRegularFile(final File file) {
+        return listDirs(file).stream();
+    }
+
+    private static List<File> listDirs(final File file) {
+        final List<File> fileList = new ArrayList<>();
+
+        if (file.isDirectory()) {
+            final File[] files = file.listFiles();
+            for (final File f : files) {
+                fileList.addAll(listDirs(f));
+            }
+        } else {
+            fileList.add(file);
+        }
+
+        return fileList;
     }
 
     private static void parse(final File file) {
