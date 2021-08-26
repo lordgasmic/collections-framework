@@ -18,22 +18,20 @@ public class ComponentConfigParser {
         final Properties prop = new Properties();
         try (final BufferedReader br = new BufferedReader(new FileReader(config))) {
             prop.load(br);
+
             final String clazzPath = Optional.ofNullable(prop.getProperty(CLASS)).orElseThrow();
             final Class<Component> clazz = (Class<Component>) Class.forName(clazzPath);
             final Component component = clazz.getDeclaredConstructor().newInstance();
-            return parseDatasource(prop, component);
-        } catch (final IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException e) {
+
+            final Field[] fields = component.getClass().getDeclaredFields();
+            for (final Field field : fields) {
+                field.setAccessible(true);
+                field.set(component, Optional.ofNullable(prop.getProperty(field.getName())).orElseThrow());
+            }
+
+            return component;
+        } catch (final IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static Component parseDatasource(final Properties prop, final Component component) throws NoSuchFieldException, IllegalAccessException {
-        final Field[] fields = component.getClass().getDeclaredFields();
-        for (final Field field : fields) {
-            field.setAccessible(true);
-            field.set(component, Optional.ofNullable(prop.getProperty(field.getName())).orElseThrow());
-        }
-
-        return component;
     }
 }

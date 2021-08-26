@@ -11,12 +11,11 @@ public class RepositoryConfigParser {
 
     private static final Gson gson = new Gson();
 
-    public static void parse(final File config) {
+    public static ItemDescriptor parse(final File config) {
         try (final BufferedReader br = new BufferedReader(new FileReader(config))) {
-            final ItemDescriptor itemDescriptor = gson.fromJson(br, ItemDescriptor.class);
-            System.out.println(itemDescriptor);
+            return gson.fromJson(br, ItemDescriptor.class);
         } catch (final IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }
