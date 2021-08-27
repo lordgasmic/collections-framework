@@ -2,7 +2,7 @@
 
 <!DOCTYPE gsa-template
         PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
-                "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
 
 <gsa-template>
 
@@ -15,74 +15,82 @@
     <item-descriptor name="user">
 
         <table name="dps_user" id-column-name="id" type="primary">
-              <!-- Making password a non-mandatory field in the profile because when an Employee User gets created in the ATG side, password shouldn't be stored (WOC-1750) -->
-		      <property category-resource="categoryLogin" name="password" data-type="string"
-		                required="false" column-name="password"
-		                cache-mode="disabled" editor-class="atg.beans.PasswordPropertyEditor" display-name-resource="password">
-		        <attribute name="maxLength" value="64"/> <!-- requires 32 chars in DB -->
-		        <attribute name="passwordHasher" bean="/atg/dynamo/security/SaltedDigestPasswordHasher"/>
-		        <attribute name="resourceBundle" value="atg.userprofiling.UserProfileTemplateResources"/>
-		        <attribute name="propertySortPriority" value="-6"/>
-		      </property>
-              
-        
-            <!-- Type of Marketplace user: consumer or employee --> 
+            <!-- Making password a non-mandatory field in the profile because when an Employee User gets created in the ATG side, password shouldn't be stored (WOC-1750) -->
+            <property category-resource="categoryLogin" name="password" data-type="string"
+                      required="false" column-name="password"
+                      cache-mode="disabled" editor-class="atg.beans.PasswordPropertyEditor"
+                      display-name-resource="password">
+                <attribute name="maxLength" value="64"/> <!-- requires 32 chars in DB -->
+                <attribute name="passwordHasher" bean="/atg/dynamo/security/SaltedDigestPasswordHasher"/>
+                <attribute name="resourceBundle" value="atg.userprofiling.UserProfileTemplateResources"/>
+                <attribute name="propertySortPriority" value="-6"/>
+            </property>
+
+
+            <!-- Type of Marketplace user: consumer or employee -->
             <property name="mpUserType" display-name="Marketplace User Type" category="GFS Extensions"
-                    data-type="enumerated" column-name="GFS_MP_USER_TYPE" default="Consumer">
+                      data-type="enumerated" column-name="GFS_MP_USER_TYPE" default="Consumer">
                 <attribute name="uiwritable" value="false"/>
                 <attribute name="propertySortPriority" value="80"/>
-                <attribute name="useCodeForValue" value="false" />
-                <option value="Consumer" code="0" />
-                <option value="Employee" code="1" />
-            </property>  
-            
+                <attribute name="useCodeForValue" value="false"/>
+                <option value="Consumer" code="0"/>
+                <option value="Employee" code="1"/>
+            </property>
+
             <property name="resetPasswordKey" display-name="Reset Password Key" category="GFS Extensions"
-                data-type="String" column-name="GFS_RESET_PASSWORD_KEY">
-                <attribute name="propertySortPriority" value="90" />
+                      data-type="String" column-name="GFS_RESET_PASSWORD_KEY">
+                <attribute name="propertySortPriority" value="90"/>
             </property>
             <property name="resetPasswordTime" display-name="Reset Password Timestamp" category="GFS Extensions"
-                data-type="timestamp" column-name="GFS_RESET_PASSWORD_TS">
-                <attribute name="propertySortPriority" value="100" />
+                      data-type="timestamp" column-name="GFS_RESET_PASSWORD_TS">
+                <attribute name="propertySortPriority" value="100"/>
             </property>
         </table>
 
         <!-- Organizations that this user is associated with. The [0] element is the user's currently selected organization. -->
-        <table name="GFS_USER_ORG_ASSOC" type="multi" id-column-name="USER_ID" multi-column-name="sequence_num" shared-table-sequence="1">
+        <table name="GFS_USER_ORG_ASSOC" type="multi" id-column-name="USER_ID" multi-column-name="sequence_num"
+               shared-table-sequence="1">
             <property name="associatedOrganizations" display-name="Associated Organisations" category="GFS Extensions"
-                    readable="true" writable="true" queryable="true" hidden="false" expert="false" required="true" cache-mode="inherit"
-                    data-type="list" component-item-type="organization" column-name="ORGANIZATION" />
+                      readable="true" writable="true" queryable="true" hidden="false" expert="false" required="true"
+                      cache-mode="inherit"
+                      data-type="list" genericService-item-type="organization" column-name="ORGANIZATION"/>
         </table>
 
         <!-- Stores that this user has selected. The [0] element is the user's currently selected store. -->
-        <table name="GFS_USER_STORE" type="multi" id-column-name="USER_ID" multi-column-name="sequence_num" shared-table-sequence="1">
+        <table name="GFS_USER_STORE" type="multi" id-column-name="USER_ID" multi-column-name="sequence_num"
+               shared-table-sequence="1">
             <property name="selectedStores" display-name="Selected Stores" category="GFS Extensions"
-                    readable="true" writable="true" queryable="true" hidden="false" expert="false" required="false" cache-mode="inherit"
-                    data-type="list" component-item-type="store" repository="/com/gfs/ecom/marketplace/store/stores/StoreRepository/" column-name="STORE" />
+                      readable="true" writable="true" queryable="true" hidden="false" expert="false" required="false"
+                      cache-mode="inherit"
+                      data-type="list" genericService-item-type="store"
+                      repository="/com/gfs/ecom/marketplace/store/stores/StoreRepository/" column-name="STORE"/>
         </table>
 
         <!-- Transient property holding state info for user's interaction with Endeca during browsing -->
-        <property name="endecaSessionState" data-type="map" component-data-type="string"/>
+        <property name="endecaSessionState" data-type="map" genericService-data-type="string"/>
         <!--  Transient property holding selection of catalog viewing, true means grid view and false means list view -->
-        <property name="gridView" data-type="boolean" default="true" />
+        <property name="gridView" data-type="boolean" default="true"/>
         <!-- Transient property used to store the referrer Url if user redirected due to invalid store in their profile -->
-        <property name="referrerUrl" data-type="string" default="" />
+        <property name="referrerUrl" data-type="string" default=""/>
         <!-- Transient property used to store the destination URL after successful hard login -->
         <property name="hardLoginDestinationUrl" data-type="string" default=""/>
         <!-- Transient property used to store the user's current device -->
-        <property name="userDevice" display-name="User Device Type" data-type="enumerated" property-type="atg.repository.SessionEnumPropertyDescriptor">
-            <attribute name="useCodeForValue" value="false" />
-            <option value="desktop" />
-            <option value="mobile" />
-        </property> 
+        <property name="userDevice" display-name="User Device Type" data-type="enumerated"
+                  property-type="atg.repository.SessionEnumPropertyDescriptor">
+            <attribute name="useCodeForValue" value="false"/>
+            <option value="desktop"/>
+            <option value="mobile"/>
+        </property>
     </item-descriptor>
 
     <!-- memberCards : Maps member card id's to their associated organization id (lookup function; no other use is made of these).  -->
     <item-descriptor name="memberCard" cache-mode="disabled">
 
         <table name="GFS_ORG_MEMBER_CARD" id-column-name="id" type="primary">
-            <property name="organizationId" display-name="Organization Id" category="GFS Extensions" 
-                    readable="true" writable="true" queryable="true" hidden="false" expert="false" required="true" cache-mode="inherit"
-                    data-type="string" column-name="ORG_REF_ID">
+            <property name="organizationId" display-name="Organization Id" category="GFS Extensions"
+                      readable="true" writable="true" queryable="true" hidden="false" expert="false" required="true"
+                      cache-mode="inherit"
+                      data-type="string" column-name="ORG_REF_ID">
                 <attribute name="uiwritable" value="false"/>
                 <attribute name="propertySortPriority" value="20"/>
             </property>
@@ -94,21 +102,28 @@
 
         <table name="dps_organization" id-column-name="org_id" type="primary">
             <property name="defaultStore" display-name="Default Store" category="GFS Extensions"
-                    readable="true" writable="true" queryable="true" hidden="false" expert="false" required="false" cache-mode="inherit"
-                    item-type="store" repository="/com/gfs/ecom/marketplace/store/stores/StoreRepository/" column-name="GFS_DEFAULT_STORE" />
+                      readable="true" writable="true" queryable="true" hidden="false" expert="false" required="false"
+                      cache-mode="inherit"
+                      item-type="store" repository="/com/gfs/ecom/marketplace/store/stores/StoreRepository/"
+                      column-name="GFS_DEFAULT_STORE"/>
             <property name="status" display-name="Status" category="GFS Extensions"
-                    readable="true" writable="true" queryable="true" hidden="false" expert="false" required="true" cache-mode="inherit"
-                    data-type="string" column-name="gfs_status" />
+                      readable="true" writable="true" queryable="true" hidden="false" expert="false" required="true"
+                      cache-mode="inherit"
+                      data-type="string" column-name="gfs_status"/>
             <property name="loyaltyTier" display-name="Loyalty Tier" category="GFS Extensions"
-                    readable="true" writable="true" queryable="true" hidden="false" expert="false" required="false" cache-mode="inherit"
-                    item-type="loyaltyTier" repository="/com/gfs/ecom/marketplace/store/stores/StoreRepository" column-name="gfs_loyalty_tier" />
+                      readable="true" writable="true" queryable="true" hidden="false" expert="false" required="false"
+                      cache-mode="inherit"
+                      item-type="loyaltyTier" repository="/com/gfs/ecom/marketplace/store/stores/StoreRepository"
+                      column-name="gfs_loyalty_tier"/>
             <property name="loyaltyTierDate" display-name="Loyalty Tier Attained Date" category="GFS Extensions"
-                    readable="true" writable="true" queryable="true" hidden="false" expert="false" required="false" cache-mode="inherit"
-                    data-type="date" column-name="gfs_loyalty_tier_date" />
+                      readable="true" writable="true" queryable="true" hidden="false" expert="false" required="false"
+                      cache-mode="inherit"
+                      data-type="date" column-name="gfs_loyalty_tier_date"/>
         </table>
         <property name="isActive" data-type="boolean"
-            property-type="com.gfs.ecom.marketplace.user.dp.ActiveOrganizationPropertyDescriptor"
-            category="GFS Extension" display-name="Considered Active" queryable="false" readable="true" writable="false" />
+                  property-type="com.gfs.ecom.marketplace.user.dp.ActiveOrganizationPropertyDescriptor"
+                  category="GFS Extension" display-name="Considered Active" queryable="false" readable="true"
+                  writable="false"/>
 
     </item-descriptor>
 
@@ -117,8 +132,8 @@
         <!-- Associating an email address as an optional value for contactInfo. -->
         <table name="dps_contact_info" id-column-name="id" type="primary">
             <property name="email" display-name="eMail Address" category="GFS Extensions"
-                data-type="String" column-name="GFS_EMAIL">
-                <attribute name="propertySortPriority" value="10" />
+                      data-type="String" column-name="GFS_EMAIL">
+                <attribute name="propertySortPriority" value="10"/>
             </property>
         </table>
 

@@ -1,5 +1,5 @@
 <!DOCTYPE gsa-template PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
-"http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
 
 <gsa-template>
 
@@ -9,158 +9,158 @@
 
     <item-descriptor name="store" display-property="storeName">
 
-        <attribute name="categoryBasicsPriority" value="10" />
-        <attribute name="categoryAddressPriority" value="20" />
-        <attribute name="categoryContactPriority" value="30" />
-        <attribute name="categoryInfoPriority" value="40" />
+        <attribute name="categoryBasicsPriority" value="10"/>
+        <attribute name="categoryAddressPriority" value="20"/>
+        <attribute name="categoryContactPriority" value="30"/>
+        <attribute name="categoryInfoPriority" value="40"/>
 
         <table name="gfs_store_location" type="primary"
-            id-column-name="store_id">
+               id-column-name="store_id">
             <property name="id" display-name="Store ID"
-                column-name="store_id" data-type="string">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="10" />
+                      column-name="store_id" data-type="string">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="10"/>
             </property>
             <property name="storeName" display-name="Store Name"
-                column-name="store_name" data-type="string"
-                category-resource="categoryBasics">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="20" />
+                      column-name="store_name" data-type="string"
+                      category-resource="categoryBasics">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="20"/>
             </property>
             <property name="isValid" data-type="boolean"
-                column-name="is_valid" category-resource="categoryBasics"
-                display-name="Valid Online Store">
-                <attribute name="propertySortPriority" value="25" />
+                      column-name="is_valid" category-resource="categoryBasics"
+                      display-name="Valid Online Store">
+                <attribute name="propertySortPriority" value="25"/>
             </property>
             <property name="address1" display-name="Address 1"
-                column-name="address_1" data-type="string"
-                category-resource="categoryAddress">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="30" />
+                      column-name="address_1" data-type="string"
+                      category-resource="categoryAddress">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="30"/>
             </property>
             <property name="address2" display-name="Address 2"
-                column-name="address_2" data-type="string"
-                category-resource="categoryAddress">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="40" />
+                      column-name="address_2" data-type="string"
+                      category-resource="categoryAddress">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="40"/>
             </property>
             <property name="city" display-name="City"
-                column-name="city" data-type="string" category-resource="categoryAddress">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="50" />
+                      column-name="city" data-type="string" category-resource="categoryAddress">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="50"/>
             </property>
             <property name="stateAddress" display-name="State"
-                column-name="state" data-type="string"
-                category-resource="categoryAddress">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="60" />
+                      column-name="state" data-type="string"
+                      category-resource="categoryAddress">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="60"/>
             </property>
             <property name="postalCode" display-name="Postal Code"
-                column-name="postal_code" data-type="string"
-                category-resource="categoryAddress">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="70" />
+                      column-name="postal_code" data-type="string"
+                      category-resource="categoryAddress">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="70"/>
             </property>
             <property name="country" display-name="Country"
-                column-name="country" data-type="string"
-                category-resource="categoryAddress">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="80" />
+                      column-name="country" data-type="string"
+                      category-resource="categoryAddress">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="80"/>
             </property>
             <property name="managerFirstName" display-name="Manager First Name"
-                column-name="manager_first_name" data-type="string"
-                category-resource="categoryContact">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="90" />
+                      column-name="manager_first_name" data-type="string"
+                      category-resource="categoryContact">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="90"/>
             </property>
             <property name="managerLastName" display-name="Manager Last Name"
-                column-name="manager_last_name" data-type="string"
-                category-resource="categoryContact">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="100" />
+                      column-name="manager_last_name" data-type="string"
+                      category-resource="categoryContact">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="100"/>
             </property>
             <property name="managerPhotoUrl" display-name="Manager Picture"
-                column-name="manager_picture" data-type="string"
-                category-resource="categoryContact">
-                <attribute name="uiwritable" value="true" />
-                <attribute name="propertySortPriority" value="110" />
+                      column-name="manager_picture" data-type="string"
+                      category-resource="categoryContact">
+                <attribute name="uiwritable" value="true"/>
+                <attribute name="propertySortPriority" value="110"/>
             </property>
             <property name="phoneNumber" display-name="Phone Number"
-                column-name="phone_number" data-type="string"
-                category-resource="categoryContact">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="120" />
+                      column-name="phone_number" data-type="string"
+                      category-resource="categoryContact">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="120"/>
             </property>
             <property name="faxNumber" display-name="Fax Number"
-                column-name="fax_number" data-type="string"
-                category-resource="categoryContact">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="130" />
+                      column-name="fax_number" data-type="string"
+                      category-resource="categoryContact">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="130"/>
             </property>
             <property name="email" display-name="Email"
-                column-name="email" data-type="string"
-                category-resource="categoryContact">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="140" />
+                      column-name="email" data-type="string"
+                      category-resource="categoryContact">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="140"/>
             </property>
             <property name="openDate" display-name="Open Date"
-                column-name="open_date" data-type="date"
-                category-resource="categoryInfo">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="150" />
+                      column-name="open_date" data-type="date"
+                      category-resource="categoryInfo">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="150"/>
             </property>
             <property name="closeDate" display-name="Close Date"
-                column-name="close_date" data-type="date"
-                category-resource="categoryInfo">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="160" />
+                      column-name="close_date" data-type="date"
+                      category-resource="categoryInfo">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="160"/>
             </property>
             <property name="weekdayHours" display-name="Weekday Hours"
-                column-name="weekday_hours" data-type="string"
-                category-resource="categoryInfo">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="170" />
+                      column-name="weekday_hours" data-type="string"
+                      category-resource="categoryInfo">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="170"/>
             </property>
             <property name="saturdayHours" display-name="Saturday Hours"
-                column-name="saturday_hours" data-type="string"
-                category-resource="categoryInfo">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="180" />
+                      column-name="saturday_hours" data-type="string"
+                      category-resource="categoryInfo">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="180"/>
             </property>
             <property name="sundayHours" display-name="Sunday Hours"
-                column-name="sunday_hours" data-type="string"
-                category-resource="categoryInfo">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="190" />
+                      column-name="sunday_hours" data-type="string"
+                      category-resource="categoryInfo">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="190"/>
             </property>
             <property name="latitude" display-name="Latitude"
-                column-name="latitude" data-type="string"
-                category-resource="categoryInfo">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="200" />
+                      column-name="latitude" data-type="string"
+                      category-resource="categoryInfo">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="200"/>
             </property>
             <property name="longitude" display-name="Longitude"
-                column-name="longitude" data-type="string"
-                category-resource="categoryInfo">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="210" />
+                      column-name="longitude" data-type="string"
+                      category-resource="categoryInfo">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="210"/>
             </property>
             <property name="specialslink" display-name="Specials Link"
-                column-name="specials_link" data-type="string"
-                category-resource="categoryInfo">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="220" />
+                      column-name="specials_link" data-type="string"
+                      category-resource="categoryInfo">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="220"/>
             </property>
             <property name="storeMPNumber" display-name="Store MP Number"
-                column-name="store_number" data-type="string"
-                category-resource="categoryInfo">
-                <attribute name="uiwritable" value="false" />
-                <attribute name="propertySortPriority" value="230" />
+                      column-name="store_number" data-type="string"
+                      category-resource="categoryInfo">
+                <attribute name="uiwritable" value="false"/>
+                <attribute name="propertySortPriority" value="230"/>
             </property>
         </table>
         <table name="gfs_store_dc" type="multi" id-column-name="store_id">
             <property name="shipDCs" column-name="dc_number"
-                data-type="set" component-item-type="shipDC" />
+                      data-type="set" genericService-item-type="shipDC"/>
         </table>
     </item-descriptor>
 
@@ -170,9 +170,9 @@
     <item-descriptor name="shipDC">
         <table name="gfs_ship_dc" type="primary" id-column-name="dc_number">
             <property name="dcNumber" column-name="dc_number"
-                display-name="DC Number" data-type="string" />
+                      display-name="DC Number" data-type="string"/>
             <property name="dcName" column-name="dc_name"
-                display-name="DC Name" data-type="string" />
+                      display-name="DC Name" data-type="string"/>
         </table>
     </item-descriptor>
 
@@ -181,57 +181,59 @@
     <!-- /////////////// -->
     <item-descriptor name="productStorage">
         <table name="gfs_product_storage" type="primary"
-            id-column-name="product_id">
+               id-column-name="product_id">
             <property name="productId" column-name="product_id"
-                display-name="Product ID" data-type="string" />
+                      display-name="Product ID" data-type="string"/>
         </table>
         <table name="gfs_product_dc" type="multi" id-column-name="product_id">
             <property name="shipDCs" column-name="dc_number"
-                data-type="set" component-item-type="shipDC" />
+                      data-type="set" genericService-item-type="shipDC"/>
         </table>
         <table name="gfs_product_store_seq" type="multi"
-            id-column-name="product_id" multi-column-name="store_id">
+               id-column-name="product_id" multi-column-name="store_id">
             <property name="sequencing" column-name="sequence_id"
-                data-type="map" component-item-type="productSequencing" />
+                      data-type="map" genericService-item-type="productSequencing"/>
         </table>
     </item-descriptor>
     <item-descriptor name="productSequencing">
         <table name="gfs_product_sequencing" type="primary"
-            id-column-name="sequence_id">
+               id-column-name="sequence_id">
             <property name="sequenceId" column-name="sequence_id"
-                display-name="Sequence ID" data-type="string" />
+                      display-name="Sequence ID" data-type="string"/>
             <property name="caseLocation" column-name="case_location"
-                display-name="Case Location" item-type="storeZone" />
+                      display-name="Case Location" item-type="storeZone"/>
             <property name="eachLocation" column-name="each_location"
-                display-name="Each Location" item-type="storeZone" />
+                      display-name="Each Location" item-type="storeZone"/>
         </table>
     </item-descriptor>
     <item-descriptor name="storeZone">
-    	<table name="gfs_store_zone" type="primary"
-    		id-column-name="zone_id">
-    		<property name="storeZone" column-name="zone_id"
-    			display-name="Zone Type ID" data-type="string" />
-    		<property name="displayName" column-name="display_name"
-    			display-name="Display Name" data-type="string" />
-    	</table>
+        <table name="gfs_store_zone" type="primary"
+               id-column-name="zone_id">
+            <property name="storeZone" column-name="zone_id"
+                      display-name="Zone Type ID" data-type="string"/>
+            <property name="displayName" column-name="display_name"
+                      display-name="Display Name" data-type="string"/>
+        </table>
     </item-descriptor>
-    
+
     <!-- //////////// -->
     <!-- Loyalty Tier -->
     <!-- //////////// -->
     <item-descriptor name="loyaltyTier" display-name="Loyalty Tier" display-property="displayName">
         <table name="gfs_loyalty_tier" type="primary" id-column-name="tier_code">
-            <property name="tierCode" display-name="Tier Code" data-type="string" column-name="tier_code" required="true" writable="true" 
-                hidden="false" expert="false">
-                <attribute name="uiwritable" value="true" />
-                <attribute name="propertySortPriority" value="10" />
+            <property name="tierCode" display-name="Tier Code" data-type="string" column-name="tier_code"
+                      required="true" writable="true"
+                      hidden="false" expert="false">
+                <attribute name="uiwritable" value="true"/>
+                <attribute name="propertySortPriority" value="10"/>
             </property>
-            <property name="displayName" display-name="Display Name" data-type="string" column-name="display_name" required="true">
-                <attribute name="propertySortPriority" value="20" />
+            <property name="displayName" display-name="Display Name" data-type="string" column-name="display_name"
+                      required="true">
+                <attribute name="propertySortPriority" value="20"/>
             </property>
-            <property name="redemptionPoints" display-name="Redemption Points Required for $1000 Check" data-type="int" 
-                column-name="redemption_points" required="true" default="0">
-                <attribute name="propertySortPriority" value="30" />
+            <property name="redemptionPoints" display-name="Redemption Points Required for $1000 Check" data-type="int"
+                      column-name="redemption_points" required="true" default="0">
+                <attribute name="propertySortPriority" value="30"/>
             </property>
         </table>
     </item-descriptor>
