@@ -1,6 +1,6 @@
 package com.lordgasmic.collections.repository;
 
-import com.lordgasmic.collections.helper.GenericService;
+import com.lordgasmic.collections.GenericService;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.lordgasmic.collections.models.config.component;
 
-import com.lordgasmic.collections.helper.GenericService;
+import com.lordgasmic.collections.GenericService;
 
 import java.io.BufferedReader;
 import java.io.File;
