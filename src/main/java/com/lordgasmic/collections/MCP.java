@@ -18,3 +18,7 @@ public class MCP {
         System.out.println(item.getPropertyValue("tag"));
     }
 }
+
+/*
+ComponentNameResolver
+ */

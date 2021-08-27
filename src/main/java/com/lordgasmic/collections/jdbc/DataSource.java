@@ -1,5 +1,6 @@
-package com.lordgasmic.collections.helper;
+package com.lordgasmic.collections.jdbc;
 
+import com.lordgasmic.collections.helper.GenericService;
 import com.lordgasmic.collections.models.config.repository.ItemDescriptor;
 import com.lordgasmic.collections.repository.RepositoryItem;
 import lombok.Data;

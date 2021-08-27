@@ -1,7 +1,7 @@
 package com.lordgasmic.collections;
 
-import com.lordgasmic.collections.helper.DataSource;
 import com.lordgasmic.collections.helper.GenericService;
+import com.lordgasmic.collections.jdbc.DataSource;
 import com.lordgasmic.collections.models.config.component.ComponentConfigParser;
 import com.lordgasmic.collections.models.config.repository.ItemDescriptor;
 import com.lordgasmic.collections.models.config.repository.RepositoryConfigParser;

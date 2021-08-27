@@ -1,6 +1,6 @@
 package com.lordgasmic.collections.repository;
 
-import com.lordgasmic.collections.helper.DataSource;
+import com.lordgasmic.collections.jdbc.DataSource;
 import com.lordgasmic.collections.models.config.repository.ItemDescriptor;
 import com.lordgasmic.collections.models.config.repository.Property;
 import com.lordgasmic.collections.models.config.repository.Table;
