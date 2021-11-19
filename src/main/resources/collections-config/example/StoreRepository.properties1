@@ -1,11 +1,14 @@
-$class=com.lordgasmic.collections.repository.GSARepository
+$class=atg.adapter.gsa.GSARepository
 $scope=global
+
 repositoryName=StoreRepository
 definitionFiles=\
-	stores.xml,\
-    storeText.xml
+	/com/gfs/ecom/marketplace/store/stores/stores.xml,\
+    /com/gfs/ecom/marketplace/store/stores/storeText.xml
+
 XMLToolsFactory=/atg/dynamo/service/xml/XMLToolsFactory
-dataSource=DataSource
+dataSource=/atg/dynamo/service/jdbc/JTDataSource
+
 idGenerator=/atg/dynamo/service/IdGenerator
 transactionManager=/atg/dynamo/transaction/TransactionManager
 checkTables=false

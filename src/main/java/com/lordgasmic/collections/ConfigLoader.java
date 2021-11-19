@@ -5,58 +5,79 @@ import com.lordgasmic.collections.models.config.component.ComponentConfigParser;
 import com.lordgasmic.collections.models.config.repository.ItemDescriptor;
 import com.lordgasmic.collections.models.config.repository.RepositoryConfigParser;
 import com.lordgasmic.collections.repository.GSARepository;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.stream.Stream;
+import java.util.Set;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
+import static java.util.stream.Collectors.toSet;
+
+@Slf4j
 public class ConfigLoader {
 
     private static final Map<String, GenericService> components = new HashMap<>();
     private static final Map<String, ItemDescriptor> definitionFiles = new HashMap<>();
 
-    public static void loadAllConfig() {
-        final File resources = new File("src/main/resources");
-        final File[] mixedConfig = resources.listFiles();
+    static void loadAllConfig() throws IOException {
+        final ClassLoader loader = ConfigLoader.class.getClassLoader();
 
-        Arrays.stream(mixedConfig).flatMap(ConfigLoader::toRegularFile).forEach(ConfigLoader::parse);
+        final Set<String> results; //avoid duplicates in case it is a subdirectory
+        final String path = "collections-config/";
+        final URL url = loader.getResource(path);
+        log.info(url.getPath());
+        if (url.getProtocol().equals("file")) {
+            results = Files.walk(Paths.get(url.getPath()))
+                           .filter(Files::isRegularFile)
+                           .map(Path::toString)
+                           .map(p -> p.substring(p.indexOf(path)))
+                           .collect(toSet());
+        } else if (url.getProtocol().equals("jar")) {
+            log.info("in the jar");
+            final String jarPath = url.getPath().substring(5, url.getPath().lastIndexOf("!")); //strip out only the JAR file
+            log.info(jarPath);
+            final JarFile jar = new JarFile(URLDecoder.decode(jarPath, StandardCharsets.UTF_8));
+            results = jar.stream()
+                         .map(ZipEntry::getName)
+                         .peek(log::info)
+                         .filter(n -> n.startsWith(path))
+                         .peek(System.out::println)
+                         .filter(u -> !u.endsWith("/"))
+                         .collect(toSet());
+        } else {
+            results = new HashSet<>();
+        }
+
+        results.forEach(System.out::println);
+        //        results.forEach(log::info);
+
+        results.forEach(ConfigLoader::parse);
         hydrateComponents();
     }
 
-    public static GenericService getGenericService(final String componentName) {
+    static GenericService getGenericService(final String componentName) {
         return components.get(componentName);
     }
 
-    private static Stream<File> toRegularFile(final File file) {
-        return listDirs(file).stream();
-    }
-
-    private static List<File> listDirs(final File file) {
-        final List<File> fileList = new ArrayList<>();
-
-        if (file.isDirectory()) {
-            final File[] files = file.listFiles();
-            for (final File f : files) {
-                fileList.addAll(listDirs(f));
-            }
+    private static void parse(final String path) {
+        final InputStream is = ConfigLoader.class.getClassLoader().getResourceAsStream(path);
+        if (path.endsWith(".properties")) {
+            components.put(path.substring(path.lastIndexOf('/') + 1, path.indexOf('.')), ComponentConfigParser.parse(is));
+        } else if (path.endsWith(".json")) {
+            definitionFiles.put(path.substring(path.indexOf('/') + 1), RepositoryConfigParser.parse(is));
         } else {
-            fileList.add(file);
-        }
-
-        return fileList;
-    }
-
-    private static void parse(final File file) {
-        if (file.getName().endsWith(".properties")) {
-            components.put(file.getName().substring(0, file.getName().indexOf('.')), ComponentConfigParser.parse(file));
-        } else if (file.getName().endsWith(".json")) {
-            definitionFiles.put(file.getName(), RepositoryConfigParser.parse(file));
-        } else {
-            System.out.println("Skipping parsing of file: " + file.getName());
+            log.info("Skipping parsing of file: " + path);
         }
     }
 

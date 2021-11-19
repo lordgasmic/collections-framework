@@ -3,9 +3,9 @@ package com.lordgasmic.collections.models.config.component;
 import com.lordgasmic.collections.GenericService;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
@@ -14,9 +14,9 @@ import java.util.Properties;
 public class ComponentConfigParser {
     private static final String CLASS = "$class";
 
-    public static GenericService parse(final File config) {
+    public static GenericService parse(final InputStream is) {
         final Properties prop = new Properties();
-        try (final BufferedReader br = new BufferedReader(new FileReader(config))) {
+        try (final BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             prop.load(br);
 
             final String clazzPath = Optional.ofNullable(prop.getProperty(CLASS)).orElseThrow();
