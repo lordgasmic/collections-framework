@@ -24,6 +24,7 @@ jobs:
         run: mvn -B package --file pom.xml
 
   publish:
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
