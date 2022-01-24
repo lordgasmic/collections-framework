@@ -45,24 +45,21 @@ public class ConfigLoader {
                            .collect(toSet());
         } else if (url.getProtocol().equals("jar")) {
             log.info("in the jar");
-            final String jarPath = url.getPath().substring(5, url.getPath().lastIndexOf("!")); //strip out only the JAR file
+            log.info("jar file path: " + url.getPath());
+            final String jarPath = url.getPath().substring(5, url.getPath().indexOf("!")); //strip out only the JAR file
             log.info(jarPath);
             final JarFile jar = new JarFile(URLDecoder.decode(jarPath, StandardCharsets.UTF_8));
-            results = jar.stream()
-                         .map(ZipEntry::getName)
-                         .peek(log::info)
-                         .filter(n -> n.startsWith(path))
-                         .peek(System.out::println)
-                         .filter(u -> !u.endsWith("/"))
-                         .collect(toSet());
+            results = jar.stream().map(ZipEntry::getName).filter(n -> n.contains(path)).filter(u -> !u.endsWith("/")).collect(toSet());
+
         } else {
             results = new HashSet<>();
         }
 
-        results.forEach(System.out::println);
-        //        results.forEach(log::info);
+        results.forEach(log::info);
 
         results.forEach(ConfigLoader::parse);
+        components.keySet().stream().forEach(System.out::println);
+        definitionFiles.keySet().stream().forEach(System.out::println);
         hydrateComponents();
     }
 
@@ -71,6 +68,9 @@ public class ConfigLoader {
     }
 
     private static void parse(final String path) {
+        final ClassLoader loader = ConfigLoader.class.getClassLoader();
+        final URL url = loader.getResource(path);
+        log.info("parse url: " + url.getPath());
         final InputStream is = ConfigLoader.class.getClassLoader().getResourceAsStream(path);
         if (path.endsWith(".properties")) {
             components.put(path.substring(path.lastIndexOf('/') + 1, path.indexOf('.')), ComponentConfigParser.parse(is));
