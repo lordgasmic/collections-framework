@@ -29,7 +29,6 @@ public class ComponentConfigParser {
                 field.set(genericService, Optional.ofNullable(prop.getProperty(field.getName())).orElseThrow());
             }
 
-            System.out.println("Generic Service parsing:" + genericService);
             return genericService;
         } catch (final IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);

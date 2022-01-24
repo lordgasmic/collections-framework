@@ -11,9 +11,9 @@ import java.util.List;
 @Slf4j
 public class MCP {
     public static void main(final String... args) throws SQLException, IOException {
-        ConfigLoader.loadAllConfig();
+        final Nucleus nucleus = Nucleus.getInstance();
 
-        final GSARepository repository = (GSARepository) ConfigLoader.getGenericService("MemeRepository");
+        final GSARepository repository = (GSARepository) nucleus.getGenericService("MemeRepository");
         final List<RepositoryItem> items = repository.getAllRepositoryItems("memeTag");
         items.forEach(item -> log.info("{}", item.getPropertyValue("uuid")));
 
