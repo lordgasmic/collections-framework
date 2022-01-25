@@ -43,6 +43,10 @@ public class Nucleus {
         loadAllConfig();
     }
 
+    public static void start() {
+
+    }
+
     public static Nucleus getInstance() {
         return INSTANCE;
     }
@@ -80,7 +84,7 @@ public class Nucleus {
         hydrateComponents();
     }
 
-    public static GenericService getGenericService(final String componentName) {
+    public GenericService getGenericService(final String componentName) {
         return components.get(componentName);
     }
 
