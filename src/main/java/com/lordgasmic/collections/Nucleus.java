@@ -44,7 +44,7 @@ public class Nucleus {
     }
 
     public static void start() {
-
+        log.info("Nucleus is starting ...");
     }
 
     public static Nucleus getInstance() {
@@ -57,7 +57,7 @@ public class Nucleus {
         final Set<String> results; //avoid duplicates in case it is a subdirectory
         final String path = "collections-config/";
         final URL url = loader.getResource(path);
-        log.info(url.getPath());
+        //        log.info(url.getPath());
         if (url.getProtocol().equals("file")) {
             results = Files.walk(Paths.get(url.getPath()))
                            .filter(Files::isRegularFile)
@@ -65,10 +65,10 @@ public class Nucleus {
                            .map(p -> p.substring(p.indexOf(path)))
                            .collect(toSet());
         } else if (url.getProtocol().equals("jar")) {
-            log.info("in the jar");
-            log.info("jar file path: " + url.getPath());
+            //            log.info("in the jar");
+            //            log.info("jar file path: " + url.getPath());
             final String jarPath = url.getPath().substring(5, url.getPath().indexOf("!")); //strip out only the JAR file
-            log.info(jarPath);
+            //            log.info(jarPath);
             final JarFile jar = new JarFile(URLDecoder.decode(jarPath, StandardCharsets.UTF_8));
             results = jar.stream().map(ZipEntry::getName).filter(n -> n.contains(path)).filter(u -> !u.endsWith("/")).collect(toSet());
 
@@ -76,11 +76,11 @@ public class Nucleus {
             results = new HashSet<>();
         }
 
-        results.forEach(log::info);
+        //        results.forEach(log::info);
 
         results.forEach(Nucleus::parse);
-        components.keySet().stream().forEach(System.out::println);
-        definitionFiles.keySet().stream().forEach(System.out::println);
+        //        components.keySet().forEach(System.out::println);
+        //        definitionFiles.keySet().forEach(System.out::println);
         hydrateComponents();
     }
 
