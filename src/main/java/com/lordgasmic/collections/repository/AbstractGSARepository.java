@@ -43,6 +43,14 @@ public abstract class AbstractGSARepository implements MutableRepository {
         return items.get(0);
     }
 
+    @Override
+    public List<RepositoryItem> getRepositoryItems(final List<String> ids, final String itemDescriptor) throws SQLException {
+        final ItemDescriptor itemDesc = mItemDescriptors.get(itemDescriptor);
+        final Table table = itemDesc.getTables().get(0);
+        final String query = String.format("select * from %s where id in (%s)", table.getName(), String.join(",", ids));
+        return mDatasource.query(query, itemDesc, this::hydrateItem);
+    }
+
     private List<RepositoryItem> hydrateItem(final ItemDescriptor id, final ResultSet rs) {
         final List<RepositoryItem> items = new ArrayList<>();
         try {

@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface Repository extends GenericService {
 
-    public List<RepositoryItem> getAllRepositoryItems(String itemDescriptor) throws SQLException;
+    List<RepositoryItem> getAllRepositoryItems(String itemDescriptor) throws SQLException;
 
-    public RepositoryItem getRepositoryItem(final String id, String itemDescriptor) throws SQLException;
+    RepositoryItem getRepositoryItem(final String id, String itemDescriptor) throws SQLException;
+
+    List<RepositoryItem> getRepositoryItems(List<String> ids, String itemDescriptor) throws SQLException;
 }
