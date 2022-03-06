@@ -27,5 +27,30 @@ public abstract class DataSource implements GenericService {
         }
     }
 
+    public ResultSet query(final String sql) throws SQLException {
+        final String url = connectionString();
+        try (final Connection conn = DriverManager.getConnection(url)) {
+            final PreparedStatement stmt = conn.prepareStatement(sql);
+            final ResultSet rs = stmt.executeQuery();
+            return rs;
+        }
+    }
+
+    public void insert(final String sql) throws SQLException {
+        try (final Connection conn = DriverManager.getConnection(connectionString())) {
+            final PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void update(final String sql) {
+        try (final Connection conn = DriverManager.getConnection(connectionString())) {
+            final PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
+        } catch (final SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     protected abstract String connectionString();
 }

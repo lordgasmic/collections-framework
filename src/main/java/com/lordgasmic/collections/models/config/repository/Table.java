@@ -10,6 +10,8 @@ public class Table {
     private String name;
     @SerializedName(value = "id-column")
     private String idColumn;
+    @SerializedName(value = "id-column-name")
+    private String idColumnName;
     private TableType type;
     private List<Property> properties;
 }
