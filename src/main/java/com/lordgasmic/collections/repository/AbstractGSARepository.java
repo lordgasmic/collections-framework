@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,6 +119,10 @@ public abstract class AbstractGSARepository implements MutableRepository {
     private String getLastInsertId(final ResultSet rs) {
         try {
             rs.next();
+            final ResultSetMetaData metaData = rs.getMetaData();
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                log.info("Column Name: " + metaData.getColumnName(i));
+            }
             return Integer.valueOf(rs.getInt("last_insert_id")).toString();
         } catch (final SQLException e) {
             throw new RuntimeException(e);
