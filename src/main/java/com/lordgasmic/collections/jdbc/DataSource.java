@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -28,19 +29,12 @@ public abstract class DataSource implements GenericService {
         }
     }
 
-    public String query(final String sql, final Function<ResultSet, String> function) throws SQLException {
-        final String url = connectionString();
-        try (final Connection conn = DriverManager.getConnection(url)) {
-            final PreparedStatement stmt = conn.prepareStatement(sql);
-            final ResultSet rs = stmt.executeQuery();
-            return function.apply(rs);
-        }
-    }
-
-    public void insert(final String sql) throws SQLException {
+    public String insert(final String sql, final Function<ResultSet, String> function) throws SQLException {
         try (final Connection conn = DriverManager.getConnection(connectionString())) {
-            final PreparedStatement stmt = conn.prepareStatement(sql);
+            final PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.executeUpdate();
+            final ResultSet rs = stmt.getGeneratedKeys();
+            return function.apply(rs);
         }
     }
 

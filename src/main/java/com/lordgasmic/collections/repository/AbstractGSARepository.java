@@ -88,8 +88,7 @@ public abstract class AbstractGSARepository implements MutableRepository {
             }
         }
         final String insert = String.format("insert into %s (%s) values (%s)", table.getName(), fields, values);
-        mDatasource.insert(insert);
-        final String id = mDatasource.query("select LAST_INSERT_ID() as last_insert_id", this::getLastInsertId);
+        final String id = mDatasource.insert(insert, this::getLastInsertId);
         log.info("last insert id " + id);
         return getRepositoryItem(id, mutableRepositoryItem.getItemDescriptorName());
     }
@@ -119,7 +118,7 @@ public abstract class AbstractGSARepository implements MutableRepository {
     private String getLastInsertId(final ResultSet rs) {
         try {
             rs.next();
-            return rs.getString("last_insert_id");
+            return Integer.valueOf(rs.getInt("last_insert_id")).toString();
         } catch (final SQLException e) {
             throw new RuntimeException(e);
         }
