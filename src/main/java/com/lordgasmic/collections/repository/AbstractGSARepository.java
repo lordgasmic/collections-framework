@@ -71,12 +71,12 @@ public abstract class AbstractGSARepository implements MutableRepository {
         final StringBuilder fields = new StringBuilder();
         final StringBuilder values = new StringBuilder();
         for (int i = 0; i < properties.size(); i++) {
-            final String propertyName = properties.get(i).getName();
             if (i != 0) {
                 fields.append(",");
                 values.append(",");
             }
-            fields.append(propertyName);
+            fields.append(properties.get(i).getColumn());
+            final String propertyName = properties.get(i).getName();
             if (properties.get(i).getDataType() == DataType.STRING) {
                 values.append("'");
                 values.append(mutableRepositoryItem.getPropertyValue(propertyName));
