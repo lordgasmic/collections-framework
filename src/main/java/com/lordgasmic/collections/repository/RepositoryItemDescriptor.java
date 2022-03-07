@@ -16,5 +16,4 @@ public class RepositoryItemDescriptor {
         this.itemDescriptor = itemDescriptor;
     }
 
-
 }

@@ -4,7 +4,6 @@ import com.lordgasmic.collections.jdbc.DataSource;
 import com.lordgasmic.collections.models.config.repository.ItemDescriptor;
 import com.lordgasmic.collections.models.config.repository.Property;
 import com.lordgasmic.collections.models.config.repository.Table;
-import com.lordgasmic.collections.service.IdGenerator;
 import lombok.Data;
 
 import java.sql.ResultSet;
@@ -18,11 +17,9 @@ import java.util.Map;
 public abstract class AbstractGSARepository implements MutableRepository {
 
     private DataSource mDatasource;
-    private Map<String, IdGenerator> mIdGenerators;
     private Map<String, ItemDescriptor> mItemDescriptors;
 
     public AbstractGSARepository() {
-        mIdGenerators = new HashMap<>();
         mItemDescriptors = new HashMap<>();
     }
 
@@ -56,12 +53,8 @@ public abstract class AbstractGSARepository implements MutableRepository {
 
     @Override
     public MutableRepositoryItem createItem(final String itemDescriptor) {
-        final IdGenerator idGenerator = mIdGenerators.get(itemDescriptor);
-        final ItemDescriptor itemDesc = mItemDescriptors.get(itemDescriptor);
-        final Table table = itemDesc.getTables().get(0);
-
         final MutableRepositoryItem item = new RepositoryItemImpl();
-        item.setProperty(table.getIdColumnName(), idGenerator.nextId());
+        item.setItemDescriptorName(itemDescriptor);
         return item;
     }
 
@@ -71,34 +64,13 @@ public abstract class AbstractGSARepository implements MutableRepository {
     }
 
     @Override
-    public RepositoryItem addItem(final MutableRepositoryItem mutableRepositoryItem) throws IllegalStateException {
-        return null;
-    }
-
-    public void initialize() {
-        try {
-            for (final String item : mItemDescriptors.keySet()) {
-                final String query = String.format("select * from id_generator where item_descriptor in ('%s')", item);
-                final ResultSet rs = mDatasource.query(query);
-                final IdGenerator idGenerator = new IdGenerator();
-                if (rs.next()) {
-                    idGenerator.setMItemDescriptor(rs.getString("item_descriptor"));
-                    idGenerator.setMCurrentId(rs.getString("current_id"));
-                    idGenerator.setMPrefix(rs.getString("prefix"));
-                    idGenerator.setMSuffix(rs.getString("suffix"));
-                } else {
-                    idGenerator.setMItemDescriptor(item);
-                    idGenerator.setMCurrentId("0");
-                    final String insert = String.format("insert into id_generator(item_descriptor, current_id) values('%s','%s')",
-                                                        idGenerator.getMItemDescriptor(),
-                                                        idGenerator.getMCurrentId());
-                    mDatasource.insert(insert);
-                }
-                mIdGenerators.put(item, idGenerator);
-            }
-        } catch (final SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public RepositoryItem addItem(final MutableRepositoryItem mutableRepositoryItem) throws IllegalStateException, SQLException {
+        final String insert = "insert into %s () values ()";
+        mDatasource.insert(insert);
+        final ResultSet rs = mDatasource.query("select last_insert_id()");
+        rs.next();
+        final String id = rs.getString("last_insert_id");
+        return getRepositoryItem(id, mutableRepositoryItem.getItemDescriptorName());
     }
 
     private List<RepositoryItem> hydrateItem(final ItemDescriptor id, final ResultSet rs) {
@@ -123,9 +95,4 @@ public abstract class AbstractGSARepository implements MutableRepository {
         return items;
     }
 
-    private RepositoryItem warmItem(final ItemDescriptor id) {
-        final MutableRepositoryItem item = new RepositoryItemImpl();
-        item.setItemDescriptorName(id.getName());
-        return item;
-    }
 }

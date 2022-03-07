@@ -2,7 +2,7 @@ package com.lordgasmic.collections.repository;
 
 public interface RepositoryItem {
 
-    public Object getPropertyValue(String propertyName);
+    Object getPropertyValue(String propertyName);
 
-    public String getItemDescriptorName();
+    String getItemDescriptorName();
 }

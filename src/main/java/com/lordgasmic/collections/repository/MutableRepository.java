@@ -1,5 +1,7 @@
 package com.lordgasmic.collections.repository;
 
+import java.sql.SQLException;
+
 public interface MutableRepository extends Repository {
 
     /**
@@ -17,7 +19,7 @@ public interface MutableRepository extends Repository {
      * @return The {@link RepositoryItem} that was added
      * @throws IllegalStateException Throws {@link IllegalStateException} if the item with the id already exists
      */
-    RepositoryItem addItem(MutableRepositoryItem mutableRepositoryItem) throws IllegalStateException;
+    RepositoryItem addItem(MutableRepositoryItem mutableRepositoryItem) throws IllegalStateException, SQLException;
 
     /**
      * Updates the database with the passed {@link RepositoryItem}.  This is a full in-place update, no merging will be attempted
