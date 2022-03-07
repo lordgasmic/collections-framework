@@ -1,6 +1,7 @@
 package com.lordgasmic.collections.repository;
 
 import com.lordgasmic.collections.jdbc.DataSource;
+import com.lordgasmic.collections.models.config.repository.DataType;
 import com.lordgasmic.collections.models.config.repository.ItemDescriptor;
 import com.lordgasmic.collections.models.config.repository.Property;
 import com.lordgasmic.collections.models.config.repository.Table;
@@ -60,12 +61,31 @@ public abstract class AbstractGSARepository implements MutableRepository {
 
     @Override
     public RepositoryItem updateItem(final RepositoryItem repositoryItem) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public RepositoryItem addItem(final MutableRepositoryItem mutableRepositoryItem) throws IllegalStateException, SQLException {
-        final String insert = "insert into %s () values ()";
+        final Table table = mItemDescriptors.get(mutableRepositoryItem.getItemDescriptorName()).getTables().get(0);
+        final List<Property> properties = table.getProperties();
+        final StringBuilder fields = new StringBuilder();
+        final StringBuilder values = new StringBuilder();
+        for (int i = 0; i < properties.size(); i++) {
+            final String propertyName = properties.get(i).getName();
+            if (i != 0) {
+                fields.append(",");
+                values.append(",");
+            }
+            fields.append(propertyName);
+            if (properties.get(i).getDataType() == DataType.STRING) {
+                values.append("'");
+                values.append(mutableRepositoryItem.getPropertyValue(propertyName));
+                values.append("'");
+            } else {
+                values.append(mutableRepositoryItem.getPropertyValue(propertyName));
+            }
+        }
+        final String insert = String.format("insert into %s (%s) values (%s)", table.getName(), fields, values);
         mDatasource.insert(insert);
         final ResultSet rs = mDatasource.query("select last_insert_id()");
         rs.next();
@@ -94,5 +114,4 @@ public abstract class AbstractGSARepository implements MutableRepository {
         }
         return items;
     }
-
 }
