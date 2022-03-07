@@ -6,6 +6,7 @@ import com.lordgasmic.collections.models.config.repository.ItemDescriptor;
 import com.lordgasmic.collections.models.config.repository.Property;
 import com.lordgasmic.collections.models.config.repository.Table;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
+@Slf4j
 public abstract class AbstractGSARepository implements MutableRepository {
 
     private DataSource mDatasource;
@@ -88,7 +90,7 @@ public abstract class AbstractGSARepository implements MutableRepository {
         final String insert = String.format("insert into %s (%s) values (%s)", table.getName(), fields, values);
         mDatasource.insert(insert);
         final String id = mDatasource.query("select LAST_INSERT_ID() as last_insert_id", this::getLastInsertId);
-        System.out.println("last insert id " + id);
+        log.info("last insert id " + id);
         return getRepositoryItem(id, mutableRepositoryItem.getItemDescriptorName());
     }
 
