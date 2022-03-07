@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public abstract class DataSource implements GenericService {
 
@@ -27,12 +28,12 @@ public abstract class DataSource implements GenericService {
         }
     }
 
-    public ResultSet query(final String sql) throws SQLException {
+    public String query(final String sql, final Function<ResultSet, String> function) throws SQLException {
         final String url = connectionString();
         try (final Connection conn = DriverManager.getConnection(url)) {
             final PreparedStatement stmt = conn.prepareStatement(sql);
             final ResultSet rs = stmt.executeQuery();
-            return rs;
+            return function.apply(rs);
         }
     }
 
