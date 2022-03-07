@@ -109,7 +109,6 @@ public class Nucleus {
                     final ItemDescriptor itemDescriptor = definitionFiles.get(def);
                     repository.getMItemDescriptors().put(itemDescriptor.getName(), itemDescriptor);
                 }
-                repository.initialize();
             }
         }
     }
