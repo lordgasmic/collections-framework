@@ -113,3 +113,7 @@ public class Nucleus {
         }
     }
 }
+
+// add metrics service for determining if a cache is benefitial (ie reads and writes to database)
+// // async?
+// // // spring app could do it no prob

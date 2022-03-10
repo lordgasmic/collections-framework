@@ -104,6 +104,7 @@ public abstract class AbstractGSARepository implements MutableRepository {
                         case INT -> item.setProperty(property.getName(), rs.getInt(property.getColumn()));
                         case DOUBLE -> item.setProperty(property.getName(), rs.getDouble(property.getColumn()));
                         case STRING -> item.setProperty(property.getName(), rs.getString(property.getColumn()));
+                        case BINARY -> item.setProperty(property.getName(), rs.getBytes(property.getColumn()));
                         default -> throw new IllegalArgumentException("cant find data type");
                     }
                 }
