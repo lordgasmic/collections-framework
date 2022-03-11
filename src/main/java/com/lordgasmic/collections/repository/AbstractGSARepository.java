@@ -1,13 +1,13 @@
 package com.lordgasmic.collections.repository;
 
 import com.lordgasmic.collections.jdbc.DataSource;
-import com.lordgasmic.collections.models.config.repository.DataType;
 import com.lordgasmic.collections.models.config.repository.ItemDescriptor;
 import com.lordgasmic.collections.models.config.repository.Property;
 import com.lordgasmic.collections.models.config.repository.Table;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -78,17 +78,10 @@ public abstract class AbstractGSARepository implements MutableRepository {
                 values.append(",");
             }
             fields.append(properties.get(i).getColumn());
-            final String propertyName = properties.get(i).getName();
-            if (properties.get(i).getDataType() == DataType.STRING) {
-                values.append("'");
-                values.append(mutableRepositoryItem.getPropertyValue(propertyName));
-                values.append("'");
-            } else {
-                values.append(mutableRepositoryItem.getPropertyValue(propertyName));
-            }
+            values.append("?");
         }
         final String insert = String.format("insert into %s (%s) values (%s)", table.getName(), fields, values);
-        final String id = mDatasource.insert(insert, this::getLastInsertId);
+        final String id = mDatasource.insert(insert, table, mutableRepositoryItem, this::createPreparedStatement, this::getLastInsertId);
         log.info("last insert id " + id);
         return getRepositoryItem(id, mutableRepositoryItem.getItemDescriptorName());
     }
@@ -114,6 +107,20 @@ public abstract class AbstractGSARepository implements MutableRepository {
             throw new RuntimeException(e);
         }
         return items;
+    }
+
+    private void createPreparedStatement(final Table table, final RepositoryItem item, final PreparedStatement stmt) throws SQLException {
+        final List<Property> properties = table.getProperties();
+        for (int i = 0; i < properties.size(); i++) {
+            final String propertyName = properties.get(i).getName();
+            switch (properties.get(i).getDataType()) {
+                case DOUBLE -> stmt.setDouble(i + 1, (Double) item.getPropertyValue(propertyName));
+                case INT -> stmt.setInt(i + 1, (Integer) item.getPropertyValue(propertyName));
+                case STRING -> stmt.setString(i + 1, (String) item.getPropertyValue(propertyName));
+                case BINARY -> stmt.setBytes(i + 1, (byte[]) item.getPropertyValue(propertyName));
+                default -> throw new IllegalArgumentException("cant find data type");
+            }
+        }
     }
 
     private String getLastInsertId(final ResultSet rs) {

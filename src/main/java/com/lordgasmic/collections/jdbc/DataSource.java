@@ -2,6 +2,8 @@ package com.lordgasmic.collections.jdbc;
 
 import com.lordgasmic.collections.GenericService;
 import com.lordgasmic.collections.models.config.repository.ItemDescriptor;
+import com.lordgasmic.collections.models.config.repository.Table;
+import com.lordgasmic.collections.models.config.repository.TriConsumer;
 import com.lordgasmic.collections.repository.RepositoryItem;
 
 import java.sql.Connection;
@@ -29,9 +31,14 @@ public abstract class DataSource implements GenericService {
         }
     }
 
-    public String insert(final String sql, final Function<ResultSet, String> function) throws SQLException {
+    public String insert(final String sql,
+                         final Table table,
+                         final RepositoryItem item,
+                         final TriConsumer<Table, RepositoryItem, PreparedStatement> consumer,
+                         final Function<ResultSet, String> function) throws SQLException {
         try (final Connection conn = DriverManager.getConnection(connectionString())) {
             final PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            consumer.apply(table, item, stmt);
             stmt.executeUpdate();
             final ResultSet rs = stmt.getGeneratedKeys();
             return function.apply(rs);
