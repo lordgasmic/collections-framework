@@ -73,6 +73,9 @@ public abstract class AbstractGSARepository implements MutableRepository {
         final StringBuilder fields = new StringBuilder();
         final StringBuilder values = new StringBuilder();
         for (int i = 0; i < properties.size(); i++) {
+            if (mutableRepositoryItem.getPropertyValue(properties.get(i).getName()) == null) {
+                continue;
+            }
             if (i != 0) {
                 fields.append(",");
                 values.append(",");
@@ -81,7 +84,7 @@ public abstract class AbstractGSARepository implements MutableRepository {
             values.append("?");
         }
         final String insert = String.format("insert into %s (%s) values (%s)", table.getName(), fields, values);
-        final String id = mDatasource.insert(insert, table, mutableRepositoryItem, this::createPreparedStatement, this::getLastInsertId);
+        final String id = mDatasource.insert(insert, table, mutableRepositoryItem, this::createPreparedStatement);
         log.info("last insert id " + id);
         return getRepositoryItem(id, mutableRepositoryItem.getItemDescriptorName());
     }
@@ -113,10 +116,9 @@ public abstract class AbstractGSARepository implements MutableRepository {
         final List<Property> properties = table.getProperties();
         for (int i = 0; i < properties.size(); i++) {
             final String propertyName = properties.get(i).getName();
-            log.info("property name: " + propertyName);
-            log.info("statemnt: " + stmt);
-            log.info("item: " + item);
-            log.info("property value: " + item.getPropertyValue(propertyName));
+            if (item.getPropertyValue(propertyName) == null) {
+                continue;
+            }
             switch (properties.get(i).getDataType()) {
                 case DOUBLE -> stmt.setDouble(i + 1, (Double) item.getPropertyValue(propertyName));
                 case INT -> stmt.setInt(i + 1, (Integer) item.getPropertyValue(propertyName));
@@ -124,15 +126,6 @@ public abstract class AbstractGSARepository implements MutableRepository {
                 case BINARY -> stmt.setBytes(i + 1, (byte[]) item.getPropertyValue(propertyName));
                 default -> throw new IllegalArgumentException("cant find data type");
             }
-        }
-    }
-
-    private String getLastInsertId(final ResultSet rs) {
-        try {
-            rs.next();
-            return rs.getString("GENERATED_KEY");
-        } catch (final SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 }

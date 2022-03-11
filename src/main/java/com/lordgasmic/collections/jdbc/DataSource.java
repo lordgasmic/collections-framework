@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public abstract class DataSource implements GenericService {
 
@@ -34,14 +33,14 @@ public abstract class DataSource implements GenericService {
     public String insert(final String sql,
                          final Table table,
                          final RepositoryItem item,
-                         final TriConsumer<Table, RepositoryItem, PreparedStatement> consumer,
-                         final Function<ResultSet, String> function) throws SQLException {
+                         final TriConsumer<Table, RepositoryItem, PreparedStatement> consumer) throws SQLException {
         try (final Connection conn = DriverManager.getConnection(connectionString())) {
             final PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             consumer.apply(table, item, stmt);
             stmt.executeUpdate();
             final ResultSet rs = stmt.getGeneratedKeys();
-            return function.apply(rs);
+            rs.next();
+            return rs.getString("GENERATED_KEY");
         }
     }
 
