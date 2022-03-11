@@ -113,6 +113,10 @@ public abstract class AbstractGSARepository implements MutableRepository {
         final List<Property> properties = table.getProperties();
         for (int i = 0; i < properties.size(); i++) {
             final String propertyName = properties.get(i).getName();
+            log.info("property name: " + propertyName);
+            log.info("statemnt: " + stmt);
+            log.info("item: " + item);
+            log.info("property value: " + item.getPropertyValue(propertyName));
             switch (properties.get(i).getDataType()) {
                 case DOUBLE -> stmt.setDouble(i + 1, (Double) item.getPropertyValue(propertyName));
                 case INT -> stmt.setInt(i + 1, (Integer) item.getPropertyValue(propertyName));
