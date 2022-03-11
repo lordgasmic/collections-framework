@@ -72,16 +72,19 @@ public abstract class AbstractGSARepository implements MutableRepository {
         final List<Property> properties = table.getProperties();
         final StringBuilder fields = new StringBuilder();
         final StringBuilder values = new StringBuilder();
-        for (int i = 0; i < properties.size(); i++) {
-            if (mutableRepositoryItem.getPropertyValue(properties.get(i).getName()) == null) {
+        int index = 0;
+        for (final Property property : properties) {
+            if (mutableRepositoryItem.getPropertyValue(property.getName()) == null) {
                 continue;
             }
-            if (i != 0) {
+
+            if (index != 0) {
                 fields.append(",");
                 values.append(",");
             }
-            fields.append(properties.get(i).getColumn());
+            fields.append(property.getColumn());
             values.append("?");
+            index++;
         }
         final String insert = String.format("insert into %s (%s) values (%s)", table.getName(), fields, values);
         final String id = mDatasource.insert(insert, table, mutableRepositoryItem, this::createPreparedStatement);
@@ -122,8 +125,8 @@ public abstract class AbstractGSARepository implements MutableRepository {
             }
             stmtIndex++;
             switch (property.getDataType()) {
-                case DOUBLE -> stmt.setDouble(stmtIndex, (Double) item.getPropertyValue(propertyName));
                 case INT -> stmt.setInt(stmtIndex, (Integer) item.getPropertyValue(propertyName));
+                case DOUBLE -> stmt.setDouble(stmtIndex, (Double) item.getPropertyValue(propertyName));
                 case STRING -> stmt.setString(stmtIndex, (String) item.getPropertyValue(propertyName));
                 case BINARY -> stmt.setBytes(stmtIndex, (byte[]) item.getPropertyValue(propertyName));
                 default -> throw new IllegalArgumentException("cant find data type");
