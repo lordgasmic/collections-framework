@@ -114,16 +114,18 @@ public abstract class AbstractGSARepository implements MutableRepository {
 
     private void createPreparedStatement(final Table table, final RepositoryItem item, final PreparedStatement stmt) throws SQLException {
         final List<Property> properties = table.getProperties();
-        for (int i = 0; i < properties.size(); i++) {
-            final String propertyName = properties.get(i).getName();
+        int stmtIndex = 0;
+        for (final Property property : properties) {
+            final String propertyName = property.getName();
             if (item.getPropertyValue(propertyName) == null) {
                 continue;
             }
-            switch (properties.get(i).getDataType()) {
-                case DOUBLE -> stmt.setDouble(i + 1, (Double) item.getPropertyValue(propertyName));
-                case INT -> stmt.setInt(i + 1, (Integer) item.getPropertyValue(propertyName));
-                case STRING -> stmt.setString(i + 1, (String) item.getPropertyValue(propertyName));
-                case BINARY -> stmt.setBytes(i + 1, (byte[]) item.getPropertyValue(propertyName));
+            stmtIndex++;
+            switch (property.getDataType()) {
+                case DOUBLE -> stmt.setDouble(stmtIndex, (Double) item.getPropertyValue(propertyName));
+                case INT -> stmt.setInt(stmtIndex, (Integer) item.getPropertyValue(propertyName));
+                case STRING -> stmt.setString(stmtIndex, (String) item.getPropertyValue(propertyName));
+                case BINARY -> stmt.setBytes(stmtIndex, (byte[]) item.getPropertyValue(propertyName));
                 default -> throw new IllegalArgumentException("cant find data type");
             }
         }
