@@ -12,4 +12,6 @@ public interface Repository extends GenericService {
     RepositoryItem getRepositoryItem(final String id, String itemDescriptor) throws SQLException;
 
     List<RepositoryItem> getRepositoryItems(List<String> ids, String itemDescriptor) throws SQLException;
+
+    RepositoryItem getRepositoryItem(String value, String propertyName, String itemDescriptor) throws SQLException;
 }
