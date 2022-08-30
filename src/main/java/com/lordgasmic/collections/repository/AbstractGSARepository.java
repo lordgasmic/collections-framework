@@ -80,6 +80,7 @@ public abstract class AbstractGSARepository implements MutableRepository {
 
     @Override
     public RepositoryItem updateItem(final RepositoryItem repositoryItem) {
+        log.info("enter udpdate item");
         final Table table = mItemDescriptors.get(repositoryItem.getItemDescriptorName()).getTables().get(0);
         final List<Property> properties = table.getProperties();
         final StringBuilder update = new StringBuilder();
