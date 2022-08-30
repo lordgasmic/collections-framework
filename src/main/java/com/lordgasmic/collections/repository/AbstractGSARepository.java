@@ -11,10 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Data
 @Slf4j
@@ -79,25 +79,28 @@ public abstract class AbstractGSARepository implements MutableRepository {
     }
 
     @Override
-    public RepositoryItem updateItem(final RepositoryItem repositoryItem) {
-        log.info("enter udpdate item");
+    public RepositoryItem updateItem(final RepositoryItem repositoryItem, final String... fieldsToUpdate) {
+        if (fieldsToUpdate.length == 0) {
+            throw new IllegalArgumentException("fieldsToUpdate is a required field");
+        }
+
         final Table table = mItemDescriptors.get(repositoryItem.getItemDescriptorName()).getTables().get(0);
         final List<Property> properties = table.getProperties();
         final StringBuilder update = new StringBuilder();
+        final List<Property> updateProperties = new ArrayList<>();
         int index = 0;
-        for (final Property property : properties) {
-            if (property.getName().equals(table.getIdColumnName())) {
-                continue;
-            }
-
-            if (repositoryItem.getPropertyValue(property.getName()) == null) {
-                continue;
+        for (final String field : fieldsToUpdate) {
+            final Optional<Property> optional = properties.stream().filter(p -> p.getName().equals(field)).findFirst();
+            if (optional.isEmpty()) {
+                throw new IllegalStateException("Unable to find field: " + field);
             }
 
             if (index != 0) {
                 update.append(" and ");
             }
-            update.append(property.getColumn()).append("=?");
+
+            update.append(optional.get().getColumn()).append("=?");
+            updateProperties.add(optional.get());
 
             ++index;
         }
@@ -107,7 +110,8 @@ public abstract class AbstractGSARepository implements MutableRepository {
                                             table.getIdColumn(),
                                             repositoryItem.getPropertyValue(table.getIdColumnName()));
         log.info("update sql: {}", update);
-        mDatasource.update(insert, table, repositoryItem, this::createPreparedStatement, "id");
+        log.info("insert sql: {}", insert);
+        mDatasource.update(insert, repositoryItem, updateProperties, this::createPreparedStatement);
         return repositoryItem;
     }
 
@@ -160,18 +164,17 @@ public abstract class AbstractGSARepository implements MutableRepository {
         return items;
     }
 
-    private void createPreparedStatement(final Table table,
-                                         final RepositoryItem item,
-                                         final PreparedStatement stmt,
-                                         final String... filters) throws SQLException {
+    private void createPreparedStatement(final Table table, final RepositoryItem item, final PreparedStatement stmt) throws SQLException {
         final List<Property> properties = table.getProperties();
+        createPreparedStatement(stmt, item, properties);
+    }
+
+    private void createPreparedStatement(final PreparedStatement stmt,
+                                         final RepositoryItem item,
+                                         final List<Property> properties) throws SQLException {
         int stmtIndex = 0;
         for (final Property property : properties) {
             final String propertyName = property.getName();
-
-            if (Arrays.asList(filters).contains(table.getIdColumnName())) {
-                continue;
-            }
 
             if (item.getPropertyValue(propertyName) == null) {
                 continue;

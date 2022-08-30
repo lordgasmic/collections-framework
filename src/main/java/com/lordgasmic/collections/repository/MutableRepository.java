@@ -27,5 +27,5 @@ public interface MutableRepository extends Repository {
      * @param repositoryItem The {@link RepositoryItem} to update
      * @return The {@link RepositoryItem} that was updated
      */
-    RepositoryItem updateItem(RepositoryItem repositoryItem);
+    RepositoryItem updateItem(RepositoryItem repositoryItem, String... fieldsToUpdate);
 }

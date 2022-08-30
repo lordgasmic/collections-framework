@@ -2,7 +2,7 @@ package com.lordgasmic.collections.jdbc;
 
 import com.lordgasmic.collections.GenericService;
 import com.lordgasmic.collections.models.config.repository.ItemDescriptor;
-import com.lordgasmic.collections.models.config.repository.QuadConsumer;
+import com.lordgasmic.collections.models.config.repository.Property;
 import com.lordgasmic.collections.models.config.repository.Table;
 import com.lordgasmic.collections.models.config.repository.TriConsumer;
 import com.lordgasmic.collections.repository.RepositoryItem;
@@ -46,13 +46,12 @@ public abstract class DataSource implements GenericService {
     }
 
     public void update(final String sql,
-                       final Table table,
                        final RepositoryItem item,
-                       final QuadConsumer<Table, RepositoryItem, PreparedStatement, String[]> consumer,
-                       final String... filters) {
+                       final List<Property> properties,
+                       final TriConsumer<PreparedStatement, RepositoryItem, List<Property>> consumer) {
         try (final Connection conn = DriverManager.getConnection(connectionString())) {
-            final PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            consumer.apply(table, item, stmt, filters);
+            final PreparedStatement stmt = conn.prepareStatement(sql);
+            consumer.apply(stmt, item, properties);
             stmt.executeUpdate();
         } catch (final SQLException e) {
             throw new RuntimeException(e);
