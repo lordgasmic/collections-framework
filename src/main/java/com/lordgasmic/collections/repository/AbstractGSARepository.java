@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +80,33 @@ public abstract class AbstractGSARepository implements MutableRepository {
 
     @Override
     public RepositoryItem updateItem(final RepositoryItem repositoryItem) {
-        throw new UnsupportedOperationException();
+        final Table table = mItemDescriptors.get(repositoryItem.getItemDescriptorName()).getTables().get(0);
+        final List<Property> properties = table.getProperties();
+        final StringBuilder update = new StringBuilder();
+        int index = 0;
+        for (final Property property : properties) {
+            if (property.getName().equals(table.getIdColumnName())) {
+                continue;
+            }
+
+            if (repositoryItem.getPropertyValue(property.getName()) == null) {
+                continue;
+            }
+
+            if (index != 0) {
+                update.append(" and ");
+            }
+            update.append(property.getColumn()).append("=?");
+
+            ++index;
+        }
+        final String insert = String.format("update %s set %s where %s='%s'",
+                                            table.getName(),
+                                            update,
+                                            table.getIdColumn(),
+                                            repositoryItem.getPropertyValue(table.getIdColumnName()));
+        mDatasource.update(insert, table, repositoryItem, this::createPreparedStatement, "id");
+        return repositoryItem;
     }
 
     @Override
@@ -131,11 +158,19 @@ public abstract class AbstractGSARepository implements MutableRepository {
         return items;
     }
 
-    private void createPreparedStatement(final Table table, final RepositoryItem item, final PreparedStatement stmt) throws SQLException {
+    private void createPreparedStatement(final Table table,
+                                         final RepositoryItem item,
+                                         final PreparedStatement stmt,
+                                         final String... filters) throws SQLException {
         final List<Property> properties = table.getProperties();
         int stmtIndex = 0;
         for (final Property property : properties) {
             final String propertyName = property.getName();
+
+            if (Arrays.asList(filters).contains(table.getIdColumnName())) {
+                continue;
+            }
+
             if (item.getPropertyValue(propertyName) == null) {
                 continue;
             }
