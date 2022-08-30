@@ -105,6 +105,7 @@ public abstract class AbstractGSARepository implements MutableRepository {
                                             update,
                                             table.getIdColumn(),
                                             repositoryItem.getPropertyValue(table.getIdColumnName()));
+        log.info("update sql: {}", update);
         mDatasource.update(insert, table, repositoryItem, this::createPreparedStatement, "id");
         return repositoryItem;
     }
