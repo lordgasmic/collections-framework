@@ -18,6 +18,18 @@ import java.util.function.BiFunction;
 
 public abstract class DataSource implements GenericService {
 
+    protected String host;
+    protected String database;
+    protected String username;
+    protected String password;
+
+    public DataSource(final String host, final String database, final String username, final String password) {
+        this.host = host;
+        this.database = database;
+        this.username = username;
+        this.password = password;
+    }
+
     public List<RepositoryItem> query(final String sql,
                                       final ItemDescriptor itemDescriptor,
                                       final BiFunction<ItemDescriptor, ResultSet, List<RepositoryItem>> function) throws SQLException {

@@ -91,7 +91,11 @@ public class Nucleus {
     private static void parse(final String path) {
         final InputStream is = Nucleus.class.getClassLoader().getResourceAsStream(path);
         if (path.endsWith(".properties")) {
-            components.put(path.substring(path.lastIndexOf('/') + 1, path.indexOf('.')), ComponentConfigParser.parse(is));
+            if (path.contains("DataSource")) {
+                components.put(path.substring(path.lastIndexOf('/') + 1, path.indexOf('.')), ComponentConfigParser.parseDataSource(is));
+            } else {
+                components.put(path.substring(path.lastIndexOf('/') + 1, path.indexOf('.')), ComponentConfigParser.parse(is));
+            }
         } else if (path.endsWith(".json")) {
             definitionFiles.put(path.substring(path.indexOf("collections-config/") + 19), RepositoryConfigParser.parse(is));
         } else {

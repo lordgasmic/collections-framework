@@ -1,10 +1,10 @@
 package com.lordgasmic.collections.jdbc;
 
 public class MySqlDataSource extends DataSource {
-    private String host;
-    private String database;
-    private String username;
-    private String password;
+
+    public MySqlDataSource(final String host, final String database, final String username, final String password) {
+        super(host, database, username, password);
+    }
 
     @Override
     protected String connectionString() {

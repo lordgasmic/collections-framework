@@ -1,6 +1,7 @@
 package com.lordgasmic.collections.models.config.component;
 
 import com.lordgasmic.collections.GenericService;
+import com.lordgasmic.collections.jdbc.DataSource;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,8 +31,27 @@ public class ComponentConfigParser {
             }
 
             return genericService;
-        } catch (final IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (final IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException |
+                       NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static DataSource parseDataSource(final InputStream is) {
+        final Properties properties = new Properties();
+        try {
+            properties.load(is);
+            final String clazzPath = Optional.of(properties.getProperty(CLASS)).orElseThrow();
+            final Class<DataSource> clazz = (Class<DataSource>) Class.forName(clazzPath);
+            return clazz.getDeclaredConstructor()
+                        .newInstance(properties.getProperty("host"),
+                                     properties.getProperty("database"),
+                                     properties.getProperty("username"),
+                                     properties.getProperty("password"));
+        } catch (final IOException | ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException |
+                       NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
