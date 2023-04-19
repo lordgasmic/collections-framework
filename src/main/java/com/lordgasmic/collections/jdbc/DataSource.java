@@ -6,6 +6,7 @@ import com.lordgasmic.collections.models.config.repository.Property;
 import com.lordgasmic.collections.models.config.repository.Table;
 import com.lordgasmic.collections.models.config.repository.TriConsumer;
 import com.lordgasmic.collections.repository.RepositoryItem;
+import lombok.Getter;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,6 +17,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.function.BiFunction;
 
+@Getter
 public abstract class DataSource implements GenericService {
 
     protected String host;

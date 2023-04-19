@@ -43,7 +43,7 @@ public class ComponentConfigParser {
             properties.load(is);
             final String clazzPath = Optional.of(properties.getProperty(CLASS)).orElseThrow();
             final Class<DataSource> clazz = (Class<DataSource>) Class.forName(clazzPath);
-            return clazz.getDeclaredConstructor()
+            return clazz.getDeclaredConstructor(String.class, String.class, String.class, String.class)
                         .newInstance(properties.getProperty("host"),
                                      properties.getProperty("database"),
                                      properties.getProperty("username"),
